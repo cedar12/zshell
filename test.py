@@ -1,6 +1,13 @@
 #coding:utf-8
 import zshell,sys,os
 
+'''
+prefix:         命令输入显示前缀         默认：>>
+error:          不存在的命令提示信息      默认：Command not found
+error1：        命令参数错误提示信息       默认：The number of arguments does not match
+ignore_case:    命令忽略大小写            默认：忽略
+
+'''
 app=zshell.App({'prefix':'shell:>','error':u'错误，未找到命令{0}','ignore_case':True})
 
 @app.shell
