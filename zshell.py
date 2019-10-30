@@ -1,4 +1,4 @@
-import re,sys
+import re,sys,subprocess
 
 class App():
     def __init__(self,options=None):
@@ -48,6 +48,18 @@ class App():
             return False
         return True
 
+    def cmd(self,cmd,args=[],is_system=False):
+        if len(args)>0:
+            args.insert(0, cmd)
+        else:
+            args.append(cmd)
+        if is_system:
+            p=subprocess.Popen(args=' '.join(args),stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            p.wait()
+            print(p.stdout.read())
+        else:
+            self.handle_cmd(args)
+
     def handle_cmd(self,args):
         cmd = args[0]
         if self.options['ignore_case']:
@@ -87,7 +99,7 @@ class App():
                             print(help_str)
                     except:
                         pass
-                elif len(varnames) == 0:
+                elif len(varnames) == 0 and len(args)==1:
                     msg = handle()
                 elif len(varnames) == 1 and varnames[0] == 'args':
                     args.remove(args[0])
