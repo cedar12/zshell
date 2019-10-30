@@ -1,10 +1,19 @@
-import re,sys,subprocess
+import re,sys,subprocess,platform
 
 class App():
     def __init__(self,options=None):
         self.handle_options(options)
         self.cmd_list=[]
         self.cmd_help={}
+
+    def get_system_info(self):
+        sysstr = platform.system()
+        if (sysstr == "Windows"):
+            print ("Call Windows tasks")
+        elif (sysstr == "Linux"):
+            print ("Call Linux tasks")
+        else:
+            print ("Other System tasks")
 
     def handle_options(self,options):
         if options==None:
