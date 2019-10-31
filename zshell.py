@@ -1,4 +1,12 @@
+#/usr/bin/env python
 #coding=utf-8
+#---------------------------------------------------------------------------
+# Name:        zshell.py
+# Author:      cedar12
+#
+# Created:     31-Oct-2019
+# License:     Mit License
+#---------------------------------------------------------------------------
 from __future__ import print_function
 import re,sys,subprocess,platform
 
@@ -68,7 +76,7 @@ class App():
             except:
                 args[i]=str(args[i]).replace('"','').replace('\'','')
                 pass
-        return args;
+        return args
     def start(self):
         args=sys.argv[1:]
         if len(args)>0:
@@ -191,7 +199,7 @@ class App():
                         pass
                 elif len(varnames) == 0 and len(args)==1:
                     msg = handle()
-                elif len(args)==1 and len(handle.__defaults__)==len(varnames):
+                elif len(args)==1 and (handle.__defaults__!=None and len(handle.__defaults__))==len(varnames):
                     msg = handle()
                 elif len(varnames) == 1 and varnames[0] == 'args':
                     args.remove(args[0])
