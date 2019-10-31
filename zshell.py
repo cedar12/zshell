@@ -1,12 +1,13 @@
 import re,sys,subprocess,platform
 
 class App():
-    def __init__(self,prefix='zshell:>>',ignore_case=True,not_found_error='Command not found',args_not_match_error='The number of arguments does not match'):
+    def __init__(self,prefix='zshell:>>',ignore_case=True,not_found_error='Command {0} not found',args_not_match_error='The number of arguments does not match',not_found_args_error='Args {0} not found'):
         self.options={}
         self.options['prefix']=prefix
         self.options['ignore_case']=ignore_case
         self.options['not_found_error']=not_found_error
         self.options['args_not_match_error']=args_not_match_error
+        self.options['not_found_args_error']=not_found_args_error
         self.cmd_list=[]
         self.cmd_help={}
         self.get_system_info()
@@ -18,13 +19,35 @@ class App():
     def change_prefix(self,prefix):
         self.options['prefix']=prefix
 
+    def handle_input(self,input):
+        input_list=list(input)
+        si = 0
+        ei = 0
+        for i in range(0,len(input_list)):
+            t=input_list[i]
+            if (t=='\'' or t=='"') and input_list[i-1]==' ':
+                si=i
+            if (t=='\'' or t=='"') and (i==len(input_list)-1 or input_list[i+1]==' '):
+                ei=i
+            if ei>si and si!=0:
+                for j in range(si,ei):
+                    if input_list[j]==' ':
+                        input_list[j]='_&_'
+                si=0
+                ei=0
+        input=''.join(input_list)
+        return input
+
     def handle_args(self):
         cmd_input = raw_input(self.options['prefix'])
+        cmd_input=self.handle_input(cmd_input)
         args=re.split(r'\s+', str(cmd_input).strip())
         for i in range(1,len(args)):
+            args[i]=args[i].replace('_&_',' ')
             try:
                 args[i]=int(args[i])
             except:
+                args[i]=str(args[i]).replace('"','').replace('\'','')
                 pass
         return args;
     def start(self):
@@ -58,6 +81,55 @@ class App():
             self.println(p.stdout.read())
         else:
             self.handle_cmd(args)
+    def check_args(self,varnames,arg_name):
+        if arg_name in varnames:
+            return True
+        else:
+            return False
+
+    def handle_args_match(self,varnames,args):
+        args_list=[]
+        prefix_args=[]
+        u_args=args[1:]
+        for i in range(len(u_args)-1,-1,-1):
+            arg=str(u_args[i])
+            var_arg=None
+            del_arg=None
+            for var in varnames:
+                if (arg.startswith('-{0}'.format(var)) or arg.startswith('--{0}'.format(var))) and (arg!='-{0}'.format(var) or arg!='--{0}'.format(var)):
+                    arg_val=arg.replace('-{0}'.format(var),'').replace('--{0}'.format(var),'')
+                    var_arg=('-{0}'.format(var),arg_val)
+                    del_arg=arg
+                    break
+            if var_arg!=None:
+                prefix_args.append(var_arg)
+                u_args.remove(del_arg)
+            elif i<len(u_args)-1 and arg.startswith('-') or arg.startswith('--'):
+                prefix_args.append((arg,u_args[i+1]))
+                u_args.remove(u_args[i+1])
+                u_args.remove(u_args[i])
+        for i in range(0,len(u_args)):
+            arg=u_args[i]
+            if  self.check_args(varnames,'_{0}'.format(i + 1)):
+                try:
+                    arg=int(arg)
+                    args_list.append('{0}={1}'.format('_{0}'.format(i + 1), arg))
+                except:
+                    args_list.append('{0}=\'{1}\''.format('_{0}'.format(i + 1), arg))
+                    pass
+            else:
+                return str(i + 1)
+        for arg in prefix_args:
+            if self.check_args(varnames, arg[0].replace('-','').replace('--','')):
+                try:
+                    val=int(arg[1])
+                    args_list.append('{0}={1}'.format('{0}'.format(arg[0].replace('-','').replace('--','')), val))
+                except:
+                    args_list.append('{0}=\'{1}\''.format('{0}'.format(arg[0].replace('-', '').replace('--', '')), arg[1]))
+            else:
+                return arg[0]
+        print args_list
+        return args_list
 
     def handle_cmd(self,args):
         cmd = args[0]
@@ -118,24 +190,12 @@ class App():
                     else:
                         self.println(self.options['args_not_match_error'])
                 else:
-                    args_list = []
-                    for var in varnames:
-                        for i in range(1, len(args) - 1, 2):
-                            if (args[i].strip() == '-' + var or args[i].strip() == '--' + var) and var != '_':
-                                args_list.append('{0}=\'{1}\''.format(var, args[i + 1]))
-                        if var == '_':
-                            for i in range(1, len(args)):
-                                if args[i].startswith('-') or args[i].startswith('--'):
-                                    continue
-                                elif args[i - 1].startswith('-') or args[i - 1].startswith('--'):
-                                    continue
-                                elif i == 1 or not args[i - 1].startswith('-'):
-                                    args_list.append('{0}=\'{1}\''.format(var, args[i]))
-                                else:
-                                    args_list.append('{0}={1}'.format(var, None))
-
-                    args_str = ','.join(args_list)
-                    msg = eval('handle({0})'.format(args_str))
+                    args_list = self.handle_args_match(varnames,args)
+                    if type(args_list)==str:
+                        self.println(self.options['not_found_args_error'].format(args_list))
+                    else:
+                        args_str = ','.join(args_list)
+                        msg = eval('handle({0})'.format(args_str))
                 isRun = True
                 if msg != None:
                     self.println(msg)
