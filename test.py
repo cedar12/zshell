@@ -1,6 +1,7 @@
+#/usr/bin/env python
 #coding:utf-8
 import zshell,sys,os
-
+import wx
 '''
 prefix:                     命令输入显示前缀            默认：zshell:>>
 not_found_error:            不存在的命令提示信息        默认：Command not found
@@ -38,9 +39,9 @@ def exit(status=0):
     sys.exit(0)
 
 @app.shell
-def rm(f=None,r=None,_=None):
+def rm(_1=None,f=None,r=None,_2=None):
     a=1
-    print(f,r,_)
+    print(f,r,_1,_2)
     print('rm')
     return 'fail rm'
 
@@ -57,8 +58,14 @@ def cd(args):
 @app.shell
 def pwd(args):
     return os.getcwd()
-
-
+@app.shell
+def clear():
+    if app.system_name=='Windows':
+        #app.cmd(is_system=True,cmd='cls')
+        os.system('cls')
+    else:
+        #app.cmd(is_system=True,cmd='clear')
+        os.system('clear')
 
 
 if __name__ == '__main__':

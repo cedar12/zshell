@@ -1,7 +1,31 @@
+#/usr/bin/env python
+#coding=utf-8
+#---------------------------------------------------------------------------
+# Name:        zshell.py
+# Author:      cedar12
+#
+# Created:     31-Oct-2019
+# License:     Mit License
+#---------------------------------------------------------------------------
+from __future__ import print_function
 import re,sys,subprocess,platform
 
+
 class App():
-    def __init__(self,prefix='zshell:>>',ignore_case=True,not_found_error='Command {0} not found',args_not_match_error='The number of arguments does not match',not_found_args_error='Args {0} not found'):
+    def __init__(self,prefix='zshell:>>',ignore_case=True,not_found_error='Command {0} not found',args_not_match_error='The number of arguments does not match',not_found_args_error='Args {0} not found',info_print=True):
+
+        print_str = '''
+                                                                                
+               *******    *******    *          *******    *          *         
+                    *     *          *          *          *          *         
+                  *       *******    *******    *******    *          *         
+                *               *    *     *    *          *          *         
+               *******    *******    *     *    *******    *******    *******   
+                                                                                
+            '''
+        if info_print:
+            print(print_str)
+
         self.options={}
         self.options['prefix']=prefix
         self.options['ignore_case']=ignore_case
@@ -39,7 +63,10 @@ class App():
         return input
 
     def handle_args(self):
-        cmd_input = raw_input(self.options['prefix'])
+        try:
+            cmd_input = raw_input(self.options['prefix'])
+        except:
+            cmd_input=input(self.options['prefix'])
         cmd_input=self.handle_input(cmd_input)
         args=re.split(r'\s+', str(cmd_input).strip())
         for i in range(1,len(args)):
@@ -128,7 +155,7 @@ class App():
                     args_list.append('{0}=\'{1}\''.format('{0}'.format(arg[0].replace('-', '').replace('--', '')), arg[1]))
             else:
                 return arg[0]
-        print args_list
+        print(args_list)
         return args_list
 
     def handle_cmd(self,args):
@@ -171,6 +198,8 @@ class App():
                     except:
                         pass
                 elif len(varnames) == 0 and len(args)==1:
+                    msg = handle()
+                elif len(args)==1 and (handle.__defaults__!=None and len(handle.__defaults__))==len(varnames):
                     msg = handle()
                 elif len(varnames) == 1 and varnames[0] == 'args':
                     args.remove(args[0])
@@ -220,5 +249,3 @@ class App():
             if len(args)==0 or (len(args)==1 and args[0].strip()==''):
                 continue
             self.handle_cmd(args)
-
-
