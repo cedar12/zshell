@@ -1,40 +1,22 @@
 import re,sys,subprocess,platform
 
 class App():
-    def __init__(self,options=None):
-        self.handle_options(options)
+    def __init__(self,prefix='zshell:>>',ignore_case=True,not_found_error='Command not found',args_not_match_error='The number of arguments does not match'):
+        self.options={}
+        self.options['prefix']=prefix
+        self.options['ignore_case']=ignore_case
+        self.options['not_found_error']=not_found_error
+        self.options['args_not_match_error']=args_not_match_error
         self.cmd_list=[]
         self.cmd_help={}
+        self.get_system_info()
 
     def get_system_info(self):
         sysstr = platform.system()
-        if (sysstr == "Windows"):
-            print ("Call Windows tasks")
-        elif (sysstr == "Linux"):
-            print ("Call Linux tasks")
-        else:
-            print ("Other System tasks")
+        self.system_name=sysstr
 
-    def handle_options(self,options):
-        if options==None:
-            options={}
-        try:
-            options['error']
-        except:
-            options['error']='Command not found'
-        try:
-            options['error1']
-        except:
-            options['error1'] = 'The number of arguments does not match'
-        try:
-            options['prefix']
-        except:
-            options['prefix'] = '>>'
-        try:
-            options['ignore_case']
-        except:
-            options['ignore_case'] = True
-        self.options=options
+    def change_prefix(self,prefix):
+        self.options['prefix']=prefix
 
     def handle_args(self):
         cmd_input = raw_input(self.options['prefix'])
@@ -56,6 +38,14 @@ class App():
             self.handle_cmd(args)
             return False
         return True
+    def println(self,msg):
+        if self.system_name=='Windows':
+            try:
+                print(msg.decode('GB2312'))
+            except:
+                print(msg)
+        else:
+            print(msg)
 
     def cmd(self,cmd,args=[],is_system=False):
         if len(args)>0:
@@ -65,7 +55,7 @@ class App():
         if is_system:
             p=subprocess.Popen(args=' '.join(args),stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             p.wait()
-            print(p.stdout.read())
+            self.println(p.stdout.read())
         else:
             self.handle_cmd(args)
 
@@ -105,7 +95,7 @@ class App():
                                 help_str+='{0}\t{1}'.format(param['name'],param['desc'])
                                 if i<len(params)-1:
                                     help_str+='\n'
-                            print(help_str)
+                            self.println(help_str)
                     except:
                         pass
                 elif len(varnames) == 0 and len(args)==1:
@@ -117,18 +107,16 @@ class App():
                     args_list = []
                     if len(varnames) == len(args) - 1:
                         for i in range(1, len(args)):
-                            val = args[i]
                             var = varnames[i - 1]
-                            try:
-                                val = type(args[i])
+                            if type(args[i])==int:
                                 args_list.append('{0}={1}'.format(var, args[i]))
-                            except:
+                            else:
                                 args_list.append('{0}=\'{1}\''.format(var, args[i]))
                         args_str = ','.join(args_list)
                         msg = eval('handle({0})'.format(args_str))
                         pass
                     else:
-                        print(self.options['error1'])
+                        self.println(self.options['args_not_match_error'])
                 else:
                     args_list = []
                     for var in varnames:
@@ -150,10 +138,10 @@ class App():
                     msg = eval('handle({0})'.format(args_str))
                 isRun = True
                 if msg != None:
-                    print(msg)
+                    self.println(msg)
                 break
         if not isRun:
-            print(self.options['error'].format(args[0]))
+            self.println(self.options['not_found_error'].format(args[0]))
 
     def shell(self,desc,args=[]):
         if type(desc)!=str:
