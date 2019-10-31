@@ -48,5 +48,5 @@ if __name__ == '__main__':
 
 运行helloworld.py文件
 
-![图1](https://github.com/cedar12/zshell/blob/master/example-images/helloworld-1.jpg)
+![图1](https://github.com/cedar12/zshell/tree/master/example-images/helloworld-1.jpg)
 
