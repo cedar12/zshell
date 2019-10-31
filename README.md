@@ -48,5 +48,26 @@ if __name__ == '__main__':
 
 运行helloworld.py文件
 
-![图1](https://github.com/cedar12/zshell/tree/master/example-images/helloworld-1.jpg)
+![图1](https://raw.githubusercontent.com/cedar12/zshell/master/example-images/helloworld-1.jpg)
+
+```shell
+zshell:>>helloworld
+Hello World
+```
+
+创建带参数命令
+```python
+
+@app.shell
+def add(args):
+    num=0
+    for i in args:
+        num+=i
+    return num
+```
+输入
+```shell
+zshell:>add 1 2 3
+6
+```
 
