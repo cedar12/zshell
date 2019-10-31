@@ -1,7 +1,6 @@
 #/usr/bin/env python
 #coding:utf-8
 import zshell,sys,os
-import wx
 '''
 prefix:                     命令输入显示前缀            默认：zshell:>>
 not_found_error:            不存在的命令提示信息        默认：Command not found
@@ -67,6 +66,10 @@ def clear():
         #app.cmd(is_system=True,cmd='clear')
         os.system('clear')
 
+@app.shell
+def substr(_1,s=0,e=len(_1)-1):
+    str=str(_1)[s,e]
+    return str
 
 if __name__ == '__main__':
     app.run()
