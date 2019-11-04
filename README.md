@@ -4,7 +4,7 @@
 
 
 # 安装
-解压 zshell-1.0.0.tar.gz 进入zshell-1.0.0目录使用以下命令即可安装
+解压 dist/zshell-1.1.0.tar.gz 进入到zshell-1.1.0目录使用以下命令即可安装
 ```shell
 python setup.py install
 ```
@@ -55,19 +55,12 @@ zshell:>>helloworld
 Hello World
 ```
 
-创建带参数命令
-```python
+## `@app.shell`详解
+将函数添加到zshell命令
 
-@app.shell
-def add(args):
-    num=0
-    for i in args:
-        num+=i
-    return num
-```
-输入
-```shell
-zshell:>add 1 2 3
-6
-```
+| 参数 | 说明   | 类型  | 默认 |
+|--	 |--	 |--   |--   |
+| name | 命令名 使用\|可分隔多个命令名 | str  | 函数名 |
+| desc | 命令描述 | str | ""    |
+| args | 命令参数 | list | []    |
 
