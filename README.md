@@ -10,7 +10,7 @@
 ```shell
 pip install -i https://pypi.org/project pyzshell
 ```
-> 方式二：解压 dist/zshell-1.1.0.tar.gz 进入到zshell-1.1.0目录使用以下命令即可安装
+> 方式二：解压 dist/zshell-1.1.x.tar.gz 进入到zshell-1.1.x目录使用以下命令即可安装
 ```shell
 python setup.py install
 ```
