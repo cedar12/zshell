@@ -53,6 +53,7 @@ if __name__ == '__main__':
 交互式运行
 python 文件.py
 ```shell
+python helloworld.py
 zshell:>>helloworld
 Hello World
 ```
