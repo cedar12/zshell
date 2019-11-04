@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/zshell-1.1.2-blue) ![](https://img.shields.io/badge/license-MIT-000000.svg) ![](https://img.shields.io/badge/pypi-1.1.2-lightgrey)
+![](https://img.shields.io/badge/zshell-1.1.3-blue) ![](https://img.shields.io/badge/license-MIT-000000.svg) ![](https://img.shields.io/badge/pypi-1.1.3-lightgrey)
 ----------------
 # 介绍
 使用zshell可快速构建命令行应用
