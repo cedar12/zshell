@@ -50,14 +50,14 @@ if __name__ == '__main__':
 
 ![图1](https://raw.githubusercontent.com/cedar12/zshell/master/example-images/helloworld-1.jpg)
 
-交互式运行
+### 交互式运行
 python 文件.py
 ```shell
 python helloworld.py
 zshell:>>helloworld
 Hello World
 ```
-非交互式运行
+### 非交互式运行
 python 文件.py 命令 参数
 ```shell
 python helloworld.py helloworld
