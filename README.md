@@ -1,7 +1,7 @@
 
 # 介绍
 使用zshell可快速构建命令行应用
-
+![pip](https://img.shields.io/badge/zshell-1.1.0-blue)
 
 # 安装
 以下方式任选其一即可
