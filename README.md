@@ -1,5 +1,8 @@
 ![](https://img.shields.io/badge/zshell-1.1.4-blue) ![](https://img.shields.io/badge/license-MIT-000000.svg) ![](https://img.shields.io/badge/pypi-1.1.4-lightgrey)
 ----------------
+
+[中文](https://github.com/cedar12/zshell/blob/master/README.md) | [English](https://github.com/cedar12/zshell/blob/master/README_en.md)
+
 # 介绍
 使用zshell可快速构建命令行应用
 
