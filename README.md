@@ -93,6 +93,7 @@ def add2(**kwargs):
     return kwargs['a']+kwargs['b']
 ```
 输入add -a 1 -b 1调用add命令,相加得出结果为2
+
 参数仅支持英文或以-、--开头的英文，-、--开头的参数zshell会自动去掉-、--符号
 ```shell
 zshell:>>add -a 1 -b 1
