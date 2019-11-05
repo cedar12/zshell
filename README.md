@@ -85,6 +85,8 @@ def add(*args):
 ```shell
 zshell:>>add 1 2 3
 6
+zshell:>>add 1 2 3 4
+10
 ```
 新建add2函数，函数参数为字典变长参数，参数名必须是kwargs
 ```python
@@ -92,12 +94,30 @@ zshell:>>add 1 2 3
 def add2(**kwargs):
     return kwargs['a']+kwargs['b']
 ```
-输入add -a 1 -b 1调用add命令,相加得出结果为2
+输入add2 -a 1 -b 1调用add2命令,相加得出结果为2
 
 参数仅支持英文或以-、--开头的英文，-、--开头的参数zshell会自动去掉-、--符号
 ```shell
 zshell:>>add2 -a 1 -b 1
 2
+zshell:>>add2 -a 1 -b 1 -c 1
+2
+```
+### 非变长参数
+新建add3函数，函数参数随意
+```python
+@app.shell
+def add3(a=0,b=0,c=0):
+    return a+b+c
+```
+输入add3 1 2 3调用add3命令,相加得出结果为6
+```shell
+zshell:>>add3 1 2 3
+6
+zshell:>>add3 1 2 3 4
+6
+zshell:>>add3 1
+1
 ```
 
 ## `@app.shell`详解
