@@ -96,7 +96,7 @@ def add2(**kwargs):
 
 参数仅支持英文或以-、--开头的英文，-、--开头的参数zshell会自动去掉-、--符号
 ```shell
-zshell:>>add -a 1 -b 1
+zshell:>>add2 -a 1 -b 1
 2
 ```
 
