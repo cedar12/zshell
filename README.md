@@ -133,6 +133,15 @@ zshell:>>add3 1
 | args | 命令参数 | list | []    |
 
 
+## 内置命令
+* help
+    * 输出所有可用命令
+* exit|quit
+    * 退出zshell应用
+* clear（1.1.4 新增）
+    * 清空控制台
+
+
 ## 版本
 * 1.1.4 
     * 新增内置命令 clear 
