@@ -134,10 +134,20 @@ Add the function to the zshell command
 | args | The command parameter | list | []    |
 
 
+## The built-in command
+* help
+    * Output all available commands
+* exit|quit
+    * Exit the zshell application
+* clear
+    * Clean console
+
+
+
 ## version
 * 1.1.4 
     * New built-in command clear
-        * Clearance console
+        * Clean console
     * Fix known bugs
 
 
